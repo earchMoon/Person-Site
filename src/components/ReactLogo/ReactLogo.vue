@@ -1,5 +1,5 @@
 <template>
-    <div class="react-logo" v-bind:style="{fontSize:size}">
+    <div class="react-logo" :style="{fontSize:size}">
         <div class="circle"></div>
         <div class="logo-circle circle-one"></div>
         <div class="logo-circle circle-two"></div>
@@ -15,9 +15,8 @@
 <style type="less">
     .react-logo {
         position: relative;
-        margin: 0 auto;
-        width: 16em;
-        height: 16em;
+        width: 8em;
+        height: 8em;
         background: #222222;
         font-size: 12px;
     }
@@ -26,12 +25,12 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-left: -3em;
-        margin-top: -7.5em;
-        width: 6em;
-        height: 15em;
+        margin-left: -1.5em;
+        margin-top: -3.75em;
+        width: 3em;
+        height: 7.5em;
         border-radius: 50%;
-        border: .7em solid #00d8ff;
+        border: .35em solid #00d8ff;
         box-sizing: border-box;
     }
 
@@ -39,10 +38,10 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        margin-left: -1.2em;
-        margin-top: -1.2em;
-        width: 2.4em;
-        height: 2.4em;
+        margin-left: -0.6em;
+        margin-top: -0.6em;
+        width: 1.2em;
+        height: 1.2em;
         border-radius: 50%;
         background: #00d8ff;
 

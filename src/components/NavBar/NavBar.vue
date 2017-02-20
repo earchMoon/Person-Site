@@ -3,17 +3,24 @@
         <div class="nav" flex="dir:left;box:last">
             <div class="logo" flex-box="1">Mr Wen</div>
             <div class="list" flex="dir:left">
-                <router-link to="/" class="item">Home</router-link>
-                <router-link to="/tree" class="item">Tree</router-link>
-                <router-link to="/book" class="item">Book</router-link>
-                <router-link to="/moon" class="item">Moon</router-link>
+                <router-link to="/" class="item" :class="{active:activeNum === 0}">Components</router-link>
+                <router-link to="/tree" class="item" :class="{active:activeNum === 1}">Tree</router-link>
+                <router-link to="/book" class="item" :class="{active:activeNum === 2}">Book</router-link>
+                <router-link to="/moon" class="item" :class="{active:activeNum === 3}">Moon</router-link>
             </div>
         </div>
     </div>
 </template>
 <script>
     export default {
-        name: 'navBar'
+        name: 'navBar',
+        props:{
+            activeNum: {
+                type: Number,
+                required: true,
+                default: 0
+            },
+        }
     }
 </script>
 <style type="less">
@@ -42,7 +49,7 @@
         color: #666;
         text-decoration: none;
     }
-    .item:hover {
+    .item:hover,.item.active{
         border-bottom: 4px solid #666;
     }
 </style>

@@ -1,6 +1,6 @@
 <template>
  <div>
-    <NavBar></NavBar>
+    <NavBar :activeNum="3"></NavBar>
     <p>{{msg}}</p>
     </div>
 </template>

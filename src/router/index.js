@@ -5,6 +5,7 @@ import { Home,Tree,Moon,Book } from './../pages'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
