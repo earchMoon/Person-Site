@@ -24,6 +24,8 @@ shell.config.silent = false
 webpack(webpackConfig, function (err, stats) {
   spinner.stop()
   if (err) throw err
+
+  console.log(stats);
   process.stdout.write(stats.toString({
     colors: true,
     modules: false,

@@ -1,7 +1,11 @@
-import Home from './Home/Home.vue'
-import Nav from './Nav/Nav.vue'
+import Home from './Home/Home.vue';
+import Tree from './Tree/Tree.vue';
+import Book from './Book/Book.vue';
+import Moon from './Moon/Moon.vue';
 
 export {
     Home,
-    Nav
+    Tree,
+    Book,
+    Moon,
 }

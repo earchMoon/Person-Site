@@ -1,5 +1,5 @@
 <template>
-  <div>
+<div>
         <NavBar></NavBar>
         <p>{{msg}}</p>
     </div>
@@ -14,13 +14,13 @@
 <script>
   import { NavBar } from '../../components';
   export default {
-    name: 'home',
+    name: 'tree',
     components: {
       NavBar
     },
     data() {
       return {
-        msg: 'Welcome to Your Home'
+        msg: 'Welcome to Your Tree'
       }
     }
   }

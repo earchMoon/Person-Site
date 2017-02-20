@@ -1,8 +1,8 @@
 {
-  "name": "my-project",
+  "name": "person",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "wen <wenhaojun@chuangjia.com>",
+  "author": "wen <wen_num_one@yeah.net>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

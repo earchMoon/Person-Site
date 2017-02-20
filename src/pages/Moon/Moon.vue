@@ -1,7 +1,7 @@
 <template>
-  <div>
-        <NavBar></NavBar>
-        <p>{{msg}}</p>
+ <div>
+    <NavBar></NavBar>
+    <p>{{msg}}</p>
     </div>
 </template>
 <style>
@@ -11,16 +11,17 @@
         font-size: 20px;
     }
 </style>
+
 <script>
   import { NavBar } from '../../components';
   export default {
-    name: 'home',
+    name: 'moon',
     components: {
       NavBar
     },
     data() {
       return {
-        msg: 'Welcome to Your Home'
+        msg: 'Welcome to Your Moon'
       }
     }
   }
