@@ -10,23 +10,14 @@
       <div>
         <ReactLogo></ReactLogo>
       </div>
-
-    </div>
-    <div class="content" flex="box:mean">
-      <div flex="cross:center">
-        <Loading></Loading>
-      </div>
-      <div flex="cross:center">
-        <Loading></Loading>
-      </div>
     </div>
   </div>
 </template>
 <style scoped>
     p {
         margin: 2em auto;
-        text-align: center;
         font-size: 20px;
+        text-align: center;
     }
     h3 { 
       width: 1200px;
@@ -34,8 +25,8 @@
       font-size: 40px; 
     } 
     .content {
-      margin: 1em auto;
       width: 1200px;
+      margin: 1em auto;
     }
     .content>div {
       padding: 1em;
