@@ -1,7 +1,7 @@
 {
-  "name": "person",
+  "name": "straw",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "",
   "author": "wen <wen_num_one@yeah.net>",
   "private": true,
   "scripts": {
@@ -9,6 +9,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "less": "^2.7.2",
+    "less-loader": "^3.0.0",
     "vue": "^2.1.10",
     "vue-router": "^2.2.0"
   },

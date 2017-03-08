@@ -28,5 +28,14 @@
   html,body {
     height: 100%;
     font-family: 'Dosis', 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #F8F8F8;
   }
+  h1,h3,h4 {
+    text-align: center;
+  }
+    #app {
+        width: 100%;
+        height:100%;
+        overflow: hidden;
+    }
 </style>

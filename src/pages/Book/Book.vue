@@ -6,11 +6,7 @@
     </div>
 </template>
 <style>
-    p {
-        margin: 2em auto;
-        text-align: center;
-        font-size: 20px;
-    }
+    
 </style>
 <script>
     import { NavBar,Loading } from '../../components';
