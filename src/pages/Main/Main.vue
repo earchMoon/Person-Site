@@ -2,7 +2,7 @@
     <div class="main">
         <div class="full-bg"></div>
         <!--<div class="content-user">-->
-
+            <!--MR 文-->
         <!--</div>-->
         <canvas id="canvas" width="400" height="400"></canvas>
 
@@ -50,6 +50,11 @@
             let that = this, canvas = document.getElementById('canvas');
             that.setCanvas(canvas);
             BallAnimate().start();
+            window && window.addEventListener('resize',function () {
+                that.setCanvas(canvas);
+                BallAnimate().start();
+            });
+
         },
         methods: {
             setCanvas: function (canvas) {

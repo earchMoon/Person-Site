@@ -11,16 +11,14 @@ let BallAnimate = function () {
         this.y = y;
         this.vx = vx;
         this.vy = vy;
-        this.r = getRandom(20, 40);
-        this.colorFrom = "#fff";
-        this._shadowBlur = 50;
-        this._shadowColor = "#fff";
+        this._shadowBlur = 30;
+        this._shadowColor = "#FFF";
+        this.r = getRandom(20, 40) + this._shadowBlur;
         this.color = "rgba(" + getRandom(0, 255) + "," + getRandom(0, 255) + "," + getRandom(0, 255) + ",1)";
         this.cacheCanvas = document.createElement("canvas");
         this.cacheCtx = this.cacheCanvas.getContext("2d");
         this.cacheCanvas.width = 2 * this.r;
         this.cacheCanvas.height = 2 * this.r;
-
         this.cache();
     };
 
@@ -30,22 +28,21 @@ let BallAnimate = function () {
         },
 
         cache: function () {
-            let x1 = this.x,
-                y1 = this.y - this.r,
-                r1 = this.r * 0.24,
-                x2 = this.x,
-                y2 = this.y - this.r * 0.4,
-                r2 = this.r * 2.2,
+            let x1 = this.r,
+                y1 = 0,
+                r1 = this.r * 0.2,
+                x2 = this.r,
+                y2 = this.r * 1.2,
+                r2 = this.r * 2,
                 grd = this.cacheCtx.createRadialGradient(x1, y1, r1, x2, y2, r2);
-            grd.addColorStop(0, this.colorFrom);
+            grd.addColorStop(0, "#fff");
             grd.addColorStop(1, this.color);
-            this.cacheCtx.shadowBlur = this._shadeBlur;
-            this.cacheCtx.shadowColor = this._shadeColor;
-
             this.cacheCtx.save();
+            this.cacheCtx.shadowBlur = this._shadowBlur;
+            this.cacheCtx.shadowColor = this._shadowColor;
             this.cacheCtx.fillStyle = grd;
             this.cacheCtx.beginPath();
-            this.cacheCtx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+            this.cacheCtx.arc(this.r, this.r, this.r - this._shadowBlur, 0, 2 * Math.PI);
             this.cacheCtx.closePath();
             this.cacheCtx.fill();
             this.cacheCtx.restore();
@@ -69,8 +66,8 @@ let BallAnimate = function () {
 
     let Game = {
         init: function () {
-            for (let i = 0; i < 500; i++) {
-                let b = new ball(getRandom(0, canvas.width), getRandom(0, canvas.height), getRandom(-10, 10), getRandom(-10, 10));
+            for (let i = 0; i < 1000; i++) {
+                let b = new ball(getRandom(0, canvas.width), getRandom(0, canvas.height), getRandom(-5,5), getRandom(-5,5));
                 Balls.push(b);
             }
         },
@@ -98,7 +95,7 @@ let BallAnimate = function () {
 
     window.RAF = (function () {
         return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
-                window.setTimeout(callback, 1000 / 400);
+                window.setTimeout(callback, 1000);
             };
     })();
 
@@ -106,7 +103,9 @@ let BallAnimate = function () {
 };
 
 function getRandom(a, b) {
-    return Math.floor(Math.random() * (b - a) + a);
+    let num = Math.floor(Math.random() * (b - a) + a);
+    num === 0 && ++num;
+    return num;
 }
 
 export  {
