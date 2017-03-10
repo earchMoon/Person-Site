@@ -6,7 +6,7 @@
                 <router-link to="/home" class="item" :class="{active:activeNum === 0}">CSSHUB</router-link>
                 <router-link to="/tree" class="item" :class="{active:activeNum === 1}">Tree</router-link>
                 <router-link to="/book" class="item" :class="{active:activeNum === 2}">Book</router-link>
-                <router-link to="/moon" class="item" :class="{active:activeNum === 3}">Moon</router-link>
+                <router-link to="/about" class="item" :class="{active:activeNum === 3}">简介</router-link>
             </div>
         </div>
     </header>

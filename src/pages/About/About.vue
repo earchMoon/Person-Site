@@ -5,19 +5,19 @@
     </div>
 </template>
 <style>
-   
+
 </style>
 
 <script>
   import { NavBar } from '../../components';
   export default {
-    name: 'moon',
+    name: 'about',
     components: {
       NavBar
     },
     data() {
       return {
-        msg: 'Welcome to Your Moon'
+        msg: 'Welcome to here'
       }
     }
   }

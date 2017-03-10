@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {Home, Tree, Moon, Book, Main} from './../pages'
+import {Home, Tree, Main, Book, About} from './../pages'
 
 Vue.use(Router)
 
@@ -40,11 +40,11 @@ export default new Router({
             }
         },
         {
-            path: '/moon',
-            name: 'moon',
-            component: Moon,
+            path: '/about',
+            name: 'about',
+            component: About,
             meta: {
-                title: 'Moon'
+                title: '小小鸣人，何许人也'
             }
         }
     ]
