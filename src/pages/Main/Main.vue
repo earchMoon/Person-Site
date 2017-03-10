@@ -1,15 +1,19 @@
 <template>
     <div class="main">
         <div class="full-bg"></div>
-        <!--<div class="content-user">-->
-            <!--MR 文-->
-        <!--</div>-->
+        <div class="content-user">
+            <Heads></Heads>
+            <div class="link">
+                <router-link to="/home">CSSHUB</router-link>
+            </div>
+        </div>
         <canvas id="canvas" width="400" height="400"></canvas>
 
     </div>
 </template>
 <style rel="stylesheet/less" lang="less">
     .main {
+
         canvas {
             position: relative;
             width: 100%;
@@ -20,13 +24,21 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 600px;
-            height: 300px;
+            min-width: 400px;
+            min-height: 200px;
             padding: 20px;
             border-radius: 10px;
             transform: translate(-50%, -50%);
-            background-color: slategray;
+            background-color: #1D4E69;
+            color: #fff;
             z-index: 15;
+            .link {
+                margin-top: 40px;
+                text-align: center;
+                a {
+                    color: darkred !important;
+                }
+            }
         }
         .full-bg {
             position: absolute;
@@ -34,7 +46,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, #ace 0%, #d4bc5e 100%);
+            background: linear-gradient(to left, rgb(69, 127, 202), rgb(86, 145, 200));
             z-index: 10;
         }
         width: 100%;
@@ -43,18 +55,43 @@
 
 </style>
 <script type="text/ecmascript-6">
-    import  { BallAnimate } from './ball.js';
+    import  {BallAnimate} from './ball.js';
+    import {Heads} from './../../components';
     export default {
         name: 'main',
+        components: {
+            Heads,
+        },
         mounted: function () {
+            (function () {
+                let lastTime = 0;
+                let vendors = ['ms', 'moz', 'webkit', 'o'];
+                for (let x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                    window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+                    window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+                }
+                if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback, element) {
+                    let currTime = new Date().getTime();
+                    let timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                    let id = window.setTimeout(function () {
+                        callback(currTime + timeToCall);
+                    }, timeToCall);
+                    lastTime = currTime + timeToCall;
+                    return id;
+                };
+                if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id) {
+                    clearTimeout(id);
+                };
+            }());
             let that = this, canvas = document.getElementById('canvas');
             that.setCanvas(canvas);
-            BallAnimate().start();
-            window && window.addEventListener('resize',function () {
+            let mark = new BallAnimate();
+            let ball = new mark();
+            ball.start();
+            window && window.addEventListener('resize', function () {
                 that.setCanvas(canvas);
-                BallAnimate().start();
+                ball.reStart();
             });
-
         },
         methods: {
             setCanvas: function (canvas) {

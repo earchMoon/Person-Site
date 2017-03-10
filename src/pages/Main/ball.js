@@ -5,15 +5,17 @@
 let BallAnimate = function () {
     let canvas = document.getElementById("canvas"),
         ctx = canvas.getContext('2d'),
+        gameID,
         Balls = [];
+
     let ball = function (x, y, vx, vy) {
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
-        this._shadowBlur = 30;
+        this._shadowBlur = 20;
         this._shadowColor = "#FFF";
-        this.r = getRandom(20, 40) + this._shadowBlur;
+        this.r = getRandom(4, 20) + this._shadowBlur;
         this.color = "rgba(" + getRandom(0, 255) + "," + getRandom(0, 255) + "," + getRandom(0, 255) + ",1)";
         this.cacheCanvas = document.createElement("canvas");
         this.cacheCtx = this.cacheCanvas.getContext("2d");
@@ -64,40 +66,41 @@ let BallAnimate = function () {
         }
     };
 
-    let Game = {
-        init: function () {
-            for (let i = 0; i < 1000; i++) {
-                let b = new ball(getRandom(0, canvas.width), getRandom(0, canvas.height), getRandom(-5,5), getRandom(-5,5));
-                Balls.push(b);
-            }
-        },
-
-        update: function () {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < Balls.length; i++) {
-                Balls[i].move();
-            }
-        },
-
-        loop: function () {
-            let _this = this;
-            this.update();
-            RAF(function () {
-                _this.loop();
-            })
-        },
-
-        start: function () {
-            this.init();
-            this.loop();
+    let Game = function () {};
+    Game.prototype.init = function () {
+        for (let i = 0; i < 10; i++) {
+            let b = new ball(getRandom(0, canvas.width), getRandom(0, canvas.height), getRandom(-5, 5), getRandom(-5, 5));
+            Balls.push(b);
         }
     };
 
-    window.RAF = (function () {
-        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
-                window.setTimeout(callback, 1000);
-            };
-    })();
+    Game.prototype.update = function () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < Balls.length; i++) {
+            Balls[i].move();
+        }
+    };
+
+    Game.prototype.loop = function () {
+        let _this = this;
+        _this.update();
+        gameID = window.requestAnimationFrame(function () {
+            _this.loop();
+        });
+    };
+
+    Game.prototype.start = function () {
+        let _that = this;
+        _that.init();
+        _that.loop();
+    };
+
+    Game.prototype.reStart = function () {
+        let _this = this;
+        Balls = [];
+        _this.init();
+        _this.update();
+    };
 
     return Game;
 };

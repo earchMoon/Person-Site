@@ -12,7 +12,7 @@ export default new Router({
             name: 'main',
             component: Main,
             meta: {
-                title: '浮萍'
+                title: '小小鸣人'
             }
         },
         {
