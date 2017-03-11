@@ -4,7 +4,7 @@
  *   @param min,max 返回数组值区间
  *   return 数组
  **/
-function randomArr(len = 5, min = 0, max = 100) {
+function randomArr(len = 10, min = 0, max = 61) {
     let _arr = [];
     let obj = {};
 
