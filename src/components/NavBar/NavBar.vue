@@ -3,7 +3,7 @@
         <div class="nav" flex="dir:left;box:last">
             <div class="logo" flex-box="1">小小鸣人</div>
             <div class="list" flex="dir:left">
-                <router-link to="/home" class="item" :class="{active:activeNum === 0}">CSSHUB</router-link>
+                <router-link to="/home" class="item" :class="{active:activeNum === 0}">CSS模块</router-link>
                 <router-link to="/tree" class="item" :class="{active:activeNum === 1}">Tree</router-link>
                 <router-link to="/book" class="item" :class="{active:activeNum === 2}">Book</router-link>
                 <router-link to="/about" class="item" :class="{active:activeNum === 3}">简介</router-link>

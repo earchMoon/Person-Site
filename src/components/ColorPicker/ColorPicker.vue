@@ -1,49 +1,221 @@
 <template>
-    <div class="content colorPicker" flex="dir:left">
-        <div class="twod">
+    <div class="colorPicker" flex="dir:left">
+        <div class="twod" ref="containerTwod" :style="{background: twoRGB}">
             <div class="bg bg1"></div>
             <div class="bg bg2"></div>
+            <div class="twod-pointer" ref="moveBarTwod" :style="{top: currentTopTwo,left:currentLeftTwo}"></div>
         </div>
         <div class="oned">
-            <div class="oned-bg" @mousedown="setCurrentTop"></div>
-            <div class="pointer" :style="{top: currentTop}"></div>
+            <div class="oned-bg" ref="container">
+                <div class="pointer" ref="moveBar" :style="{top: currentTop}"></div>
+            </div>
+        </div>
+        <div class="display-color">
+            <p><em>#</em><span :style="{backgroundColor: show16}">{{show16}}</span></p>
+            <p><em>R</em><span>{{R}}</span></p>
+            <p><em>G</em><span>{{G}}</span></p>
+            <p><em>B</em><span>{{B}}</span></p><br>
+            <p><em>H</em><span>{{H}}</span></p>
+            <p><em>S</em><span>{{S}}</span></p>
+            <p><em>L</em><span>{{L}}</span></p>
         </div>
     </div>
 </template>
 <script>
     export default {
         name: 'ColorPicker',
+        mounted: function () {
+            let that = this;
+            new this.draggable({//左边改变，计算S、B：
+                container: this.$refs.containerTwod,
+                handler: this.$refs.moveBarTwod,
+                moveFun: function (opt) {
+                    that.currentTopTwo = (Math.round(opt.top * 100) / that.$refs.containerTwod.offsetHeight) + "%";
+                    that.currentLeftTwo = (Math.round(opt.left * 100) / that.$refs.containerTwod.offsetWidth) + "%";
+                    //获得S(Saturation，饱和度)，从左到右升高  , L(Lightness，亮度) 从上往下降低
+                    that.S = Math.round(opt.left / 4);
+                    that.L = 100 - Math.round(opt.top / 4);
+                    let _rgb = that.hsv2rgb(that.H / 360, that.S / 100, that.L / 100);
+                    that.R = _rgb.r;
+                    that.G = _rgb.g;
+                    that.B = _rgb.b;
+                    let str = 'rgb(' + _rgb.r + ',' + _rgb.g + ',' + _rgb.b + ')';
+                    that.show16 = that.rgbTo16(str);
+                }
+            });
+            new this.draggable({
+                container: this.$refs.container,
+                handler: this.$refs.moveBar,
+                moveFun: function (opt) {
+                    that.currentTop = (Math.round(opt.top * 100) / that.$refs.container.offsetHeight) + "%";
+                    //获得H(Hue，色调)  右边
+                    that.H = Math.round(opt.top * 360 / 400) === 360 ? 0 : Math.round(opt.top * 360 / 400);
+                    //获得RGB 右边
+                    that.twoRGB = that.getColor(400 - opt.top, that.$refs.container.offsetHeight);
+                    let _rgb = that.hsv2rgb(that.H / 360, that.S / 100, that.L / 100);
+                    that.R = _rgb.r;
+                    that.G = _rgb.g;
+                    that.B = _rgb.b;
+                    let str = 'rgb(' + _rgb.r + ',' + _rgb.g + ',' + _rgb.b + ')';
+                    that.show16 = that.rgbTo16(str);
+                }
+            });
+        },
         methods: {
-            setCurrentTop: function (e) {
-                let that = this,
-                    startY = e.offsetY, //相对坐标
-                    oldY = e.clientY, //初始化坐标
-                    newY = 0;//新坐标
-                let getY = function (e) {
+            draggable: function (options) {
+                let $this = this, doc = document.body,
+                    container = options.container || $this.$refs.container,//滑动容器元素
+                    handler = options.handler || $this.$refs.moveBar,//滑动元素
+                    moveFun = options.moveFun || "";
+                let oldLeft, oldTop, mouseX, mouseY, isDown = false, hasMove = false;
+                let containerWidth = container.offsetWidth,
+                    containerHeight = container.offsetHeight;
+                container.addEventListener('mousedown', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    isDown = true;
+                    if (e.target !== handler) {
+                        oldLeft = e.offsetX;
+                        oldTop = e.offsetY;
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+                        moveFun({
+                            left: oldLeft,
+                            top: oldTop
+                        });
 
-                    let event = e || window.e;
-                    newY = event.clientY;
-                    if (newY >= oldY && newY - oldY <= 400 - startY) {
-                        let top = newY - oldY + startY;
-                        that.currentTop = Math.floor((top * 100) / 400) + "%";
-                    } else if (newY <= oldY && oldY - newY <= startY) {
-                        let top = startY - (oldY - newY);
-                        that.currentTop = Math.floor((top * 100) / 400) + "%";
                     } else {
-                        return;
+                        oldLeft = e.target.offsetLeft;
+                        oldTop = e.target.offsetTop;
+                        mouseX = e.clientX;
+                        mouseY = e.clientY;
+                    }
+                });
+                doc.addEventListener('mouseup', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    isDown = false;
+                    if (hasMove) {
+                        let pos = getCoordinate(e);
+                        moveFun({
+                            left: pos.left,
+                            top: pos.top
+                        });
+                    }
+                    hasMove = false;
+                });
+                doc.addEventListener('mousemove', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if (!isDown) {
+                        return false;
+                    }
+                    hasMove = true;
+                    let pos = getCoordinate(e);
+                    moveFun({
+                        left: pos.left,
+                        top: pos.top
+                    });
+                });
+                let getCoordinate = function (e) {
+                    let event = e || window.e, dx = event.clientX - mouseX, dy = event.clientY - mouseY, x = 0, y = 0;
+                    (oldLeft + dx <= 0) ? x = 0 : (oldLeft + dx >= containerWidth) ? x = containerWidth : x = (oldLeft + dx);
+                    (oldTop + dy <= 0) ? y = 0 : (oldTop + dy >= containerHeight) ? y = containerHeight : y = (oldTop + dy);
+                    return {left: x, top: y}
+                };
+            },
+            getColor: function (top, height) { //获得色轮任意一度的颜色值。top：滑动离顶端的距离，height：柱子的高度
+                let oneHeight = height / 6;
+                let d = 0, rgbStr;
+                if (top < oneHeight * 1) {
+                    d = (top / oneHeight) * 255;
+                    rgbStr = "rgb(255,0," + Math.round(d) + ")";
+
+                } else if (top >= oneHeight && top < 2 * oneHeight) {
+                    d = 255 - ((top - oneHeight) / oneHeight) * 255;
+                    rgbStr = "rgb(" + Math.round(d) + ",0,255)";
+
+                } else if (top >= 2 * oneHeight && top < 3 * oneHeight) {
+                    d = ((top - 2 * oneHeight) / oneHeight) * 255;
+                    rgbStr = "rgb(0," + Math.round(d) + ",255)";
+
+                } else if (top >= 3 * oneHeight && top < 4 * oneHeight) {
+                    d = 255 - ((top - 3 * oneHeight) / oneHeight) * 255;
+                    rgbStr = "rgb(0,255," + Math.round(d) + ")";
+
+                } else if (top >= 4 * oneHeight && top < oneHeight * 5) {
+                    d = ((top - oneHeight * 4) / oneHeight) * 255;
+                    rgbStr = "rgb(" + Math.round(d) + ",255,0)";
+
+                } else {
+                    d = 255 - ((top - oneHeight * 5) / oneHeight) * 255;
+                    rgbStr = "rgb(255," + Math.round(d) + ",0)";
+                }
+                return rgbStr;
+            },
+            hsv2rgb: function (H, S, V) { //HSB(V)转换为RGB，0<=H<1，0<=S,V<=1
+                let R, G, B;
+                if (S == 0){
+                    R = G = B = V;
+                }else{
+                    let _H = H * 6;
+                    if (_H == 6){
+                        _H = 0;
+                    }
+                    let i = Math.floor(_H);
+                    let v1 = V*(1 - S);
+                    let v2 = V*(1 - S*(_H - i ));
+                    let v3 = V*(1 - S*(1 - (_H - i)));
+                    if (i == 0){
+                        R = V;
+                        G = v3;
+                        B = v1;
+                    }else if(i == 1){
+                        R = v2;
+                        G = V;
+                        B = v1;
+                    }else if(i == 2){
+                        R = v1;
+                        G = V;
+                        B = v3;
+                    }else if(i == 3){
+                        R = v1;
+                        G = v2;
+                        B = V;
+                    }else if(i == 4){
+                        R = v3;
+                        G = v1;
+                        B = V;
+                    }else{
+                        R = V;
+                        G = v1;
+                        B = v2;
                     }
                 }
-                this.currentTop = Math.floor((startY * 100) / 400) + "%";
-                document.body.addEventListener("mousemove", getY, false);
-                document.body.addEventListener("mouseup", function () {
-                    document.body.removeEventListener("mousemove", getY, false);
-                });
-                return;
+                return {r: Math.round(R*255), g: Math.round(G*255), b: Math.round(B*255)};
+            },
+            rgbTo16: function (rgb) {
+                rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                function hex(x) {
+                    return ("0" + parseInt(x).toString(16)).slice(-2);
+                }
+
+                return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
             }
         },
         data() {
             return {
-                currentTop: '0%'
+                currentTop: '0%',
+                currentTopTwo: '0%',
+                currentLeftTwo: '0%',
+                R: 255,
+                G: 255,
+                B: 255,
+                H: 0,
+                S: 0,
+                L: 100,
+                show16: '#ffffff',
+                twoRGB: 'rgb(255,0,0)',
             }
         }
     }
@@ -51,27 +223,55 @@
 </script>
 
 <style type="less">
-    body {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
+    .display-color {
+        margin-left: 100px;
     }
 
-    .content {
-        width: 1200px;
-        margin: 2em auto;
-        overflow: unset;
+    .display-color p {
+        line-height: 2;
+        font-size: 20px;
+    }
+
+    .display-color p em {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .display-color p span {
+        display: inline-block;
+        width: 160px;
+        text-align: center;
     }
 
     .twod {
         position: relative;
         width: 400px;
         height: 400px;
-        border: 1px solid #ccc;
         z-index: 2;
+    }
+
+    .twod-pointer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-top: -5px;
+        margin-left: -5px;
+        width: 8px;
+        height: 8px;
+        background: transparent;
+        border: 2px solid #fff;
+        z-index: 6;
+        border-radius: 50%;
+        box-shadow: 0 0 2px 2px rgb(0, 0, 0);
+        cursor: pointer;
+    }
+
+    .twod .bg1 {
+        background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .twod .bg2 {
+        background: linear-gradient(to bottom, transparent 0%, #000 100%);
     }
 
     .oned {
@@ -89,39 +289,20 @@
         height: 100%;
         background: -webkit-linear-gradient(red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100%);
         background: -o-linear-gradient(red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100%);
-        background: linear-gradient(red 0%, #ff0 17%, lime 33%,
-        cyan 50%, blue 66%, #f0f 83%, red 100%);
+        background: linear-gradient(red 0%, #ff0 17%, lime 33%, cyan 50%, blue 66%, #f0f 83%, red 100%);
     }
 
     .oned .pointer {
         position: absolute;
-        top: 0%;
-        left: -5px;
-        width: 60px;
-        height: 4px;
-        z-index: 3;
-        background-color: #000;
-    }
-
-    .oned .pointer::after {
-        content: '';
-        position: absolute;
-        top: -6px;
-        right: -8px;
+        top: 0;
+        right: -10px;
+        margin-top: -8px;
+        width: 0;
+        height: 0;
         border-right: 10px solid #000;
         border-top: 8px solid transparent;
         border-bottom: 8px solid transparent;
-    }
-
-    .oned
-    .pointer::before {
-        content: '';
-        position: absolute;
-        top: -6px;
-        left: -8px;
-        border-left: 10px solid #000;
-        border-top: 8px solid transparent;
-        border-bottom: 8px solid transparent;
+        z-index: 3;
     }
 
     .twod .bg {

@@ -34,7 +34,6 @@
     .content {
         width: 1200px;
         margin: 1em auto;
-        background-color: #fff;
         overflow: hidden;
         border-radius: 6px;
     }
