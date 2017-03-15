@@ -22,44 +22,69 @@
     </div>
 </template>
 <script>
+    import {mapMutations, mapGetters} from 'vuex';
     export default {
         name: 'ColorPicker',
+        data() {
+            return {
+                H: 1,
+                S: 2,
+                L: 3
+            }
+        },
         mounted: function () {
+            this.H = this.getHSL[0];
+            this.S = this.getHSL[1];
+            this.L = this.getHSL[2];
             let that = this;
             new this.draggable({//左边改变，计算S、B：
                 container: this.$refs.containerTwod,
                 handler: this.$refs.moveBarTwod,
                 moveFun: function (opt) {
-                    that.currentTopTwo = (Math.round(opt.top * 100) / that.$refs.containerTwod.offsetHeight) + "%";
-                    that.currentLeftTwo = (Math.round(opt.left * 100) / that.$refs.containerTwod.offsetWidth) + "%";
-                    //获得S(Saturation，饱和度)，从左到右升高  , L(Lightness，亮度) 从上往下降低
                     that.S = Math.round(opt.left / 4);
                     that.L = 100 - Math.round(opt.top / 4);
-                    let _rgb = that.hsv2rgb(that.H / 360, that.S / 100, that.L / 100);
-                    that.R = _rgb.r;
-                    that.G = _rgb.g;
-                    that.B = _rgb.b;
-                    let str = 'rgb(' + _rgb.r + ',' + _rgb.g + ',' + _rgb.b + ')';
-                    that.show16 = that.rgbTo16(str);
                 }
             });
             new this.draggable({
                 container: this.$refs.container,
                 handler: this.$refs.moveBar,
-                moveFun: function (opt) {
-                    that.currentTop = (Math.round(opt.top * 100) / that.$refs.container.offsetHeight) + "%";
-                    //获得H(Hue，色调)  右边
-                    that.H = Math.round(opt.top * 360 / 400) === 360 ? 0 : Math.round(opt.top * 360 / 400);
-                    //获得RGB 右边
-                    that.twoRGB = that.getColor(400 - opt.top, that.$refs.container.offsetHeight);
-                    let _rgb = that.hsv2rgb(that.H / 360, that.S / 100, that.L / 100);
-                    that.R = _rgb.r;
-                    that.G = _rgb.g;
-                    that.B = _rgb.b;
-                    let str = 'rgb(' + _rgb.r + ',' + _rgb.g + ',' + _rgb.b + ')';
-                    that.show16 = that.rgbTo16(str);
+                moveFun: function (opt) {//获得H(Hue，色调)  右边
+                    that.H = Math.floor(opt.top * 360 / 400);
                 }
             });
+        },
+        computed: {
+            ...mapGetters([
+                'getHSL',
+            ]),
+            rgb() {
+                return this.hsv2rgb(this.H / 360, this.S / 100, this.L / 100);
+            },
+            R: function () {
+                return this.rgb.r;
+            },
+            G: function () {
+                return this.rgb.g;
+            },
+            B: function () {
+                return this.rgb.b;
+            },
+            currentTop: function () {
+                return (this.H*100/360) + "%";
+            },
+            currentTopTwo: function () {
+                return (100 - this.L) + "%";
+            },
+            currentLeftTwo: function () {
+                return this.S + "%";
+            },
+            twoRGB: function () {
+                return this.getColor(400 - this.H, 400);
+            },
+            show16: function () {
+                let str = 'rgb(' + this.rgb.r + ',' + this.rgb.g + ',' + this.rgb.b + ')';
+                return this.rgbTo16(str);
+            }
         },
         methods: {
             draggable: function (options) {
@@ -155,44 +180,44 @@
             },
             hsv2rgb: function (H, S, V) { //HSB(V)转换为RGB，0<=H<1，0<=S,V<=1
                 let R, G, B;
-                if (S == 0){
+                if (S == 0) {
                     R = G = B = V;
-                }else{
+                } else {
                     let _H = H * 6;
-                    if (_H == 6){
+                    if (_H == 6) {
                         _H = 0;
                     }
                     let i = Math.floor(_H);
-                    let v1 = V*(1 - S);
-                    let v2 = V*(1 - S*(_H - i ));
-                    let v3 = V*(1 - S*(1 - (_H - i)));
-                    if (i == 0){
+                    let v1 = V * (1 - S);
+                    let v2 = V * (1 - S * (_H - i ));
+                    let v3 = V * (1 - S * (1 - (_H - i)));
+                    if (i == 0) {
                         R = V;
                         G = v3;
                         B = v1;
-                    }else if(i == 1){
+                    } else if (i == 1) {
                         R = v2;
                         G = V;
                         B = v1;
-                    }else if(i == 2){
+                    } else if (i == 2) {
                         R = v1;
                         G = V;
                         B = v3;
-                    }else if(i == 3){
+                    } else if (i == 3) {
                         R = v1;
                         G = v2;
                         B = V;
-                    }else if(i == 4){
+                    } else if (i == 4) {
                         R = v3;
                         G = v1;
                         B = V;
-                    }else{
+                    } else {
                         R = V;
                         G = v1;
                         B = v2;
                     }
                 }
-                return {r: Math.round(R*255), g: Math.round(G*255), b: Math.round(B*255)};
+                return {r: Math.round(R * 255), g: Math.round(G * 255), b: Math.round(B * 255)};
             },
             rgbTo16: function (rgb) {
                 rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -201,23 +226,11 @@
                 }
 
                 return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-            }
+            },
+            ...mapMutations({
+                setHSB: 'SET_COLOR_PICKER',
+            })
         },
-        data() {
-            return {
-                currentTop: '0%',
-                currentTopTwo: '0%',
-                currentLeftTwo: '0%',
-                R: 255,
-                G: 255,
-                B: 255,
-                H: 0,
-                S: 0,
-                L: 100,
-                show16: '#ffffff',
-                twoRGB: 'rgb(255,0,0)',
-            }
-        }
     }
 
 </script>

@@ -34,14 +34,6 @@
         background-color: #F8F8F8;
     }
 
-    body {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
     h1, h3, h4 {
         text-align: center;
     }

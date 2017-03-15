@@ -1,7 +1,6 @@
 <template>
- <div>
-    <NavBar :activeNum="3"></NavBar>
-    <p>{{msg}}</p>
+    <div>
+        <NavBar :activeNum="3"></NavBar>
     </div>
 </template>
 <style>
@@ -9,16 +8,11 @@
 </style>
 
 <script>
-  import { NavBar } from '../../components';
-  export default {
-    name: 'about',
-    components: {
-      NavBar
-    },
-    data() {
-      return {
-        msg: 'Welcome to here'
-      }
+    import {NavBar} from '../../components';
+    export default {
+        name: 'about',
+        components: {
+            NavBar
+        },
     }
-  }
 </script>
