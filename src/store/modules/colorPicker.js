@@ -15,7 +15,7 @@ export default {
         }
     },
     mutations: {
-        [types.SET_COLOR_PICKER]({state,payload}){
+        [types.SET_COLOR_PICKER](state,payload){
             if (Object.prototype.toString.call(payload.HSL) !== "[object Array]"){
                 state.HSL = [0,0,0];
             }else {

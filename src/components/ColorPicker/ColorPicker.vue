@@ -43,6 +43,9 @@
                 moveFun: function (opt) {
                     that.S = Math.round(opt.left / 4);
                     that.L = 100 - Math.round(opt.top / 4);
+                    that.setHSL({
+                        HSL: [that.H,that.S,that.L]
+                    })
                 }
             });
             new this.draggable({
@@ -50,6 +53,9 @@
                 handler: this.$refs.moveBar,
                 moveFun: function (opt) {//获得H(Hue，色调)  右边
                     that.H = Math.floor(opt.top * 360 / 400);
+                    that.setHSL({
+                        HSL: [that.H,that.S,that.L]
+                    });
                 }
             });
         },
@@ -228,7 +234,7 @@
                 return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
             },
             ...mapMutations({
-                setHSB: 'SET_COLOR_PICKER',
+                setHSL: 'SET_COLOR_PICKER',
             })
         },
     }
