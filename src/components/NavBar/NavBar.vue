@@ -1,20 +1,34 @@
 <template>
-    <header class="wrap">
-        <div class="nav" flex="dir:left;box:last">
-            <div class="logo" flex-box="1">小小鸣人</div>
-            <div class="list" flex="dir:left">
-                <router-link to="/home" class="item" :class="{active:activeNum === 0}">CSS模块</router-link>
-                <router-link to="/tree" class="item" :class="{active:activeNum === 1}">Tree</router-link>
-                <router-link to="/book" class="item" :class="{active:activeNum === 2}">Book</router-link>
-                <router-link to="/about" class="item" :class="{active:activeNum === 3}">简介</router-link>
+    <header class="header ">
+        <div class="container">
+            <div class="header-logo clearfix">
+                <div class="logo"></div>
+                <div class="title">
+                    <p class="subtitle">小小鸣人</p>
+                    <p class="description">理想还是要有的</p>
+                </div>
             </div>
+            <ul class="nav nav-pills header-nav">
+                <li role="presentation">
+                    <router-link to="/home" class="item" :class="{active:activeNum === 0}">练习</router-link>
+                </li>
+                <li role="presentation">
+                    <router-link to="/tree" class="item" :class="{active:activeNum === 1}">文章</router-link>
+                </li>
+                <li role="presentation">
+                    <router-link to="/book" class="item" :class="{active:activeNum === 2}">收藏架</router-link>
+                </li>
+                <li role="presentation">
+                    <router-link to="/about" class="item" :class="{active:activeNum === 3}">简介</router-link>
+                </li>
+            </ul>
         </div>
     </header>
 </template>
 <script>
     export default {
         name: 'navBar',
-        props:{
+        props: {
             activeNum: {
                 type: Number,
                 required: true,
@@ -23,34 +37,46 @@
         }
     }
 </script>
-<style type="less">
-    .wrap {
-        background-color: rgba(254, 254, 254, 0.97);
-        box-shadow: 0 0 12px 1px rgba(204,204,204,.3);
+<style rel="stylesheet/less" lang="less">
+    .header {
+        position: relative;
+        padding-bottom: 60px;
+        background: #26272b;
+        -webkit-user-select: none;
+
+        .header-logo {
+            padding: 30px;
+        }
+        .logo {
+            float: left;
+            width: 70px;
+            height: 70px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-right: 10px;
+            background: url('./../../assets/logo.png') no-repeat left center;
+            background-size: 100% auto;
+        }
+        .title {
+            float: left;
+            .subtitle {
+                margin-top: 8px;
+                line-height: 30px;
+                font-size: 22px;
+                color: #fa862e;
+                text-shadow: 0 1px rgba(0,0,0,0.2);
+            }
+            .description {
+                margin-bottom: 0;
+                line-height: 20px;
+                font-size: 16px;
+                color: #777;
+                letter-spacing: 2px;
+            }
+        }
+        .header-nav {
+            background-color: #33363b;
+        }
     }
-    .logo {
-        padding-left: 70px;
-        height: inherit;
-        line-height: 70px;
-        font-size: 24px;
-        font-weight: 500;
-        background: url('./../../assets/logo.png') no-repeat left center;
-        background-size: auto 80%;
-    }
-    .nav {
-        width: 1200px;
-        height: 70px;
-        margin: auto;
-    }
-    .item {
-        display: block;
-        padding: 0 5px;
-        margin: 0 20px;
-        line-height: 70px;
-        color: #666;
-        text-decoration: none;
-    }
-    .item:hover,.item.active{
-        border-bottom: 4px solid #666;
-    }
+
 </style>

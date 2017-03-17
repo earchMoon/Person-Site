@@ -5,7 +5,7 @@
             <h3>CSS模块</h3>
             <p>实用的纯 CSS UI效果代码段，带你体验 CSS 的魅力和强大</p>
         </section>
-        <div class="content" flex="box:mean">
+        <div class="home-content" flex="box:mean">
             <div class="bar" flex="dir:top">
                 <Loading flex-box="1"></Loading>
                 <p flex-box="0">Loading加载</p>
@@ -16,7 +16,7 @@
             </div>
 
         </div>
-        <div class="content" flex="box:mean">
+        <div class="home-content" flex="box:mean">
             <div class="bar">
                 <ColorPicker></ColorPicker>
             </div>
@@ -31,7 +31,7 @@
         font-size: 20px;
     }
 
-    .content {
+    .home-content {
         width: 1200px;
         margin: 1em auto;
         overflow: hidden;

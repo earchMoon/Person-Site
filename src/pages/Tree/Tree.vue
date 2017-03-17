@@ -1,15 +1,18 @@
 <template>
-  <div class="tree">
-    <NavBar :activeNum="1"></NavBar>
-  </div>
+    <div class="tree">
+        <NavBar :activeNum="1"></NavBar>
+        <div>
+
+        </div>
+    </div>
 </template>
 
 <script>
-  import { NavBar } from '../../components';
-  export default {
-    name: 'tree',
-    components: {
-      NavBar
+    import {NavBar} from '../../components';
+    export default {
+        name: 'tree',
+        components: {
+            NavBar
+        }
     }
-  }
 </script>
