@@ -4,7 +4,13 @@
         <div class="content-user">
             <Heads></Heads>
             <div class="link">
-                <router-link to="/home">CSSHUB</router-link>
+                <ol class="breadcrumb">
+                    <li class="active">首页</li>
+                    <li><router-link to="/home" >练习</router-link></li>
+                    <li><router-link to="/tree" >文章</router-link></li>
+                    <li><router-link to="/book" >收藏架</router-link></li>
+                    <li><router-link to="/about" >简介</router-link></li>
+                </ol>
             </div>
         </div>
         <canvas id="canvas" width="400" height="400"></canvas>
@@ -33,11 +39,7 @@
             color: #fff;
             z-index: 15;
             .link {
-                margin-top: 40px;
-                text-align: center;
-                a {
-                    color: darkred !important;
-                }
+                margin-top: 25px;
             }
         }
         .full-bg {
