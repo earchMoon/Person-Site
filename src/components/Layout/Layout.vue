@@ -79,6 +79,7 @@
 
         },
         created: function () {
+            this.date = this.FormatDate('yyyy-MM-dd hh:mm:ss');
             this.timer = setInterval(()=>{
                 this.date = this.FormatDate('yyyy-MM-dd hh:mm:ss');
             },1000);
@@ -86,7 +87,7 @@
         data: function () {
           return {
               timer: {},
-              date: 'Loading...'
+              date: ''
           }
         },
         methods: {
