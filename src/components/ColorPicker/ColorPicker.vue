@@ -1,16 +1,16 @@
 <template>
-    <div class="colorPicker" flex="dir:left">
-        <div class="twod" ref="containerTwod" :style="{background: twoRGB}">
+    <div class="colorPicker row">
+        <div class="twod col-md-4" ref="containerTwod" :style="{background: twoRGB}">
             <div class="bg bg1"></div>
             <div class="bg bg2"></div>
             <div class="twod-pointer" ref="moveBarTwod" :style="{top: currentTopTwo,left:currentLeftTwo}"></div>
         </div>
-        <div class="oned">
+        <div class="oned col-md-4 hidden-sm hidden-xs">
             <div class="oned-bg" ref="container">
                 <div class="pointer" ref="moveBar" :style="{top: currentTop}"></div>
             </div>
         </div>
-        <div class="display-color">
+        <div class="display-color col-md-4 hidden-sm hidden-xs">
             <p><em>#</em><span :style="{backgroundColor: show16}">{{show16}}</span></p>
             <p><em>R</em><span>{{R}}</span></p>
             <p><em>G</em><span>{{G}}</span></p>
@@ -241,25 +241,22 @@
 
 </script>
 
-<style type="less">
+<style rel="stylesheet/less" lang="less">
     .display-color {
-        margin-left: 100px;
-    }
-
-    .display-color p {
-        line-height: 2;
-        font-size: 20px;
-    }
-
-    .display-color p em {
-        display: inline-block;
-        width: 60px;
-    }
-
-    .display-color p span {
-        display: inline-block;
-        width: 160px;
-        text-align: center;
+        margin-top: 30px;
+        p {
+            line-height: 2;
+            font-size: 20px;
+            em {
+                display: inline-block;
+                width: 30px;
+            }
+            span {
+                display: inline-block;
+                width: 80px;
+                text-align: center;
+            }
+        }
     }
 
     .twod {
@@ -295,7 +292,6 @@
 
     .oned {
         position: relative;
-        margin-left: 100px;
         width: 50px;
         height: 400px;
         overflow: unset;
@@ -314,7 +310,7 @@
     .oned .pointer {
         position: absolute;
         top: 0;
-        right: -10px;
+        right: 4px;
         margin-top: -8px;
         width: 0;
         height: 0;

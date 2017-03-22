@@ -1,18 +1,20 @@
 <template>
-    <div class="tree">
-        <NavBar :activeNum="1"></NavBar>
-        <div>
-
-        </div>
-    </div>
+    <Layout description="Tree">
+        TREE
+    </Layout>
 </template>
 
 <script>
-    import {NavBar} from '../../components';
+    import {Layout} from '../../components';
     export default {
         name: 'tree',
         components: {
-            NavBar
+            Layout
+        },
+        created(){
+            this.$store.commit('SET_NAV_BAR_INDEX',{
+                index: 2
+            });
         }
     }
 </script>

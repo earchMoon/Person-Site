@@ -1,68 +1,68 @@
 <template>
-    <div class="main">
-        <NavBar :activeNum="0"></NavBar>
-        <section class="desc">
-            <h3>CSS模块</h3>
-            <p>实用的纯 CSS UI效果代码段，带你体验 CSS 的魅力和强大</p>
-        </section>
-        <div class="home-content" flex="box:mean">
-            <div class="bar" flex="dir:top">
-                <Loading flex-box="1"></Loading>
-                <p flex-box="0">Loading加载</p>
+    <Layout description="练习">
+        <div class="article-row row">
+            <div class="article-summary col-sm-6">
+                <Loading></Loading>
+                <div>Loading加载</div>
             </div>
-            <div class="bar">
-                <ReactLogo size="12px" flex-box="1"></ReactLogo>
-                <p flex-box="0">LOGO for react</p>
+            <div class="article-summary col-sm-6">
+                <ReactLogo size="12px"></ReactLogo>
+                <div>LOGO for react</div>
             </div>
-
         </div>
-        <div class="home-content" flex="box:mean">
-            <div class="bar">
+        <div class="article-row row">
+            <div class="article-summary col-sm-12">
                 <ColorPicker></ColorPicker>
             </div>
         </div>
-    </div>
+        <nav aria-label="..." class="content-pagination">
+            <ul class="pagination">
+                <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            </ul>
+        </nav>
+    </Layout>
 </template>
-<style scoped>
-    .desc {
-        width: 1200px;
-        margin: 2em auto;
-        text-align: center;
-        font-size: 20px;
+<style rel="stylesheet/less" lang="less">
+    .article-row {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
     }
 
-    .home-content {
-        width: 1200px;
-        margin: 1em auto;
-        overflow: hidden;
-        border-radius: 6px;
-    }
-
-    .bar {
-        margin: 1em;
-        padding: 1em;
-        border-radius: 6px;
-        background-color: #eee;
-    }
-
-    .bar > div {
+    .article-summary {
         margin: auto;
+        vertical-align: bottom;
     }
 
-    .bar > p {
-        margin-top: 6px;
+    .content-pagination {
         text-align: center;
     }
+
+    .pagination {
+        margin: 20px auto;
+    }
+
+
 </style>
 <script>
-    import {NavBar, Loading, ReactLogo, ColorPicker} from '../../components';
+    import {Layout, Loading, ReactLogo, ColorPicker} from '../../components';
     export default {
         name: 'home',
         components: {
-            NavBar,
             Loading,
             ReactLogo,
-            ColorPicker
+            ColorPicker,
+            Layout,
+        },
+        created(){
+            this.$store.commit('SET_NAV_BAR_INDEX',{
+                index: 1
+            });
         }
     }
 </script>

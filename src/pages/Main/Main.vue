@@ -1,6 +1,5 @@
 <template>
-    <div class="main">
-        <div class="full-bg"></div>
+    <div class="main-full">
         <div class="content-user">
             <Heads></Heads>
             <div class="link">
@@ -14,47 +13,31 @@
             </div>
         </div>
         <canvas id="canvas" width="400" height="400"></canvas>
-
     </div>
 </template>
 <style rel="stylesheet/less" lang="less">
-    .main {
-
-        canvas {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 12;
-        }
-        .content-user {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 400px;
-            min-height: 200px;
-            padding: 20px;
-            border-radius: 10px;
-            transform: translate(-50%, -50%);
-            background-color: #1D4E69;
-            color: #fff;
-            z-index: 15;
-            .link {
-                margin-top: 25px;
-            }
-        }
-        .full-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to left, rgb(69, 127, 202), rgb(86, 145, 200));
-            z-index: 10;
-        }
-        width: 100%;
-        height: 100%;
+    canvas {
+        display: block;
+        margin: 0;
+        background: linear-gradient(to left, rgb(69, 127, 202), rgb(86, 145, 200));
     }
-
+    .content-user {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 480px;
+        height: 240px;
+        padding: 20px;
+        margin-left: -247px;
+        margin-top: -120px;
+        border-radius: 10px;
+        background-color: #1D4E69;
+        color: #fff;
+        z-index: 15;
+        .link {
+            margin-top: 25px;
+        }
+    }
 </style>
 <script type="text/ecmascript-6">
     import  {BallAnimate} from './ball.js';
@@ -85,6 +68,7 @@
                     clearTimeout(id);
                 };
             }());
+
             let that = this, canvas = document.getElementById('canvas');
             that.setCanvas(canvas);
             let mark = new BallAnimate();
@@ -97,8 +81,8 @@
         },
         methods: {
             setCanvas: function (canvas) {
-                canvas.width = document.body.clientWidth;
-                canvas.height = document.body.clientHeight;
+                canvas.width = document.documentElement.clientWidth || window.innerWidth;
+                canvas.height = document.documentElement.clientHeight || window.innerHeight;
             }
         }
     }

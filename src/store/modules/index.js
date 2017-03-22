@@ -3,7 +3,9 @@
  */
 
 import colorPicker from './colorPicker';
+import navBarActive from './navBarActive';
 
 export default {
+    navBarActive,
     colorPicker
 }

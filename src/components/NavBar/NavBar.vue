@@ -1,57 +1,42 @@
 <template>
-    <header class="header ">
+    <header class="header">
         <div class="container">
-            <div class="header-logo clearfix">
+            <div class="row header-logo clearfix">
                 <div class="logo"></div>
                 <div class="title">
                     <p class="subtitle">小小鸣人</p>
                     <p class="description">理想还是要有的</p>
                 </div>
             </div>
-            <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false">
-                            <span class="sr-only"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <router-link to="/" class="navbar-brand">首页</router-link>
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            <li role="presentation">
-                                <router-link to="/home" class="item" :class="{active:activeNum === 0}">练习</router-link>
-                            </li>
-                            <li role="presentation">
-                                <router-link to="/tree" class="item" :class="{active:activeNum === 1}">文章</router-link>
-                            </li>
-                            <li role="presentation">
-                                <router-link to="/book" class="item" :class="{active:activeNum === 2}">收藏架</router-link>
-                            </li>
-                            <li role="presentation">
-                                <router-link to="/about" class="item" :class="{active:activeNum === 3}">简介</router-link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+            <nav class="row navbar navbar-inverse">
+                <ul class="nav navbar-nav">
+                    <li role="presentation">
+                        <router-link to="/" :class="{active:index === 0}">首页</router-link>
+                    </li>
+                    <li role="presentation" :class="{active:index === 1}">
+                        <router-link to="/home">练习</router-link>
+                    </li>
+                    <li role="presentation" :class="{active:index === 2}">
+                        <router-link to="/tree">文章</router-link>
+                    </li>
+                    <li role="presentation" :class="{active:index === 3}">
+                        <router-link to="/book">收藏架</router-link>
+                    </li>
+                    <li role="presentation" :class="{active:index === 4}">
+                        <router-link to="/about">简介</router-link>
+                    </li>
+                </ul>
             </nav>
-
         </div>
     </header>
 </template>
 <script>
     export default {
         name: 'navBar',
-        props: {
-            activeNum: {
-                type: Number,
-                required: true,
-                default: 0
-            },
+        computed:{
+            index : function() {
+                return this.$store.getters.getActiveIndex
+            }
         }
     }
 </script>
@@ -62,6 +47,9 @@
         background: #26272b;
         -webkit-user-select: none;
 
+        .navbar {
+            margin-bottom: 0;
+        }
         .header-logo {
             padding: 30px;
         }
