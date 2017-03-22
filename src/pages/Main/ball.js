@@ -66,9 +66,11 @@ let BallAnimate = function () {
         }
     };
 
-    let Game = function () {};
+    let Game = function (count) {
+        this.count = count || 50;
+    };
     Game.prototype.init = function () {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.count; i++) {
             let b = new ball(getRandom(0, canvas.width), getRandom(0, canvas.height), getRandom(-5, 5), getRandom(-5, 5));
             Balls.push(b);
         }
